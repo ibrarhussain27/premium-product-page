@@ -1,0 +1,83 @@
+{% doc %}
+  Loads the scoped style foundation for the premium product page.
+
+  Outputs no markup. Shopify bundles the CSS below into the theme's compiled
+  stylesheet, and every rule is scoped under `.product--premium`, so it only
+  affects the element that carries that class in `sections/main-product.liquid`.
+
+  @example
+  {% render 'premium-product-styles' %}
+{% enddoc %}
+
+{% stylesheet %}
+  /*
+    Premium product page: style foundation.
+
+    This bundled CSS is linked through content_for_header, which loads
+    before base.css and section-main-product.css. Dawn wins equal-specificity ties, so
+    every rule here is prefixed with .product--premium to outrank the rule it refines.
+
+    Colors derive from the section's color scheme, so text and surfaces stay legible
+    if the scheme is changed in the theme editor.
+  */
+
+  .product--premium {
+    --premium-color-text: rgb(var(--color-foreground));
+    --premium-color-text-body: rgba(var(--color-foreground), 0.85);
+    --premium-color-text-muted: rgba(var(--color-foreground), 0.7);
+    --premium-color-surface: rgb(var(--color-background));
+    --premium-color-surface-muted: rgba(var(--color-foreground), 0.03);
+    --premium-border-color: rgba(var(--color-foreground), 0.12);
+    --premium-border: 0.1rem solid var(--premium-border-color);
+
+    --premium-space-xs: 0.8rem;
+    --premium-space-s: 1.2rem;
+    --premium-space-m: 1.6rem;
+    --premium-space-l: 2.4rem;
+    --premium-space-xl: 3.2rem;
+    --premium-stack-gap: var(--premium-space-m);
+  }
+
+  @media screen and (min-width: 750px) {
+    .product--premium {
+      --premium-stack-gap: 2rem;
+    }
+  }
+
+  /* Media: subtle off-white surface behind product photography */
+  .product--premium .product__media-item .product-media-container {
+    background-color: var(--premium-color-surface-muted);
+  }
+
+  /* Info column: body text color and vertical rhythm */
+  .product--premium .product__info-container {
+    color: var(--premium-color-text-body);
+  }
+
+  .product--premium .product__info-container > * + * {
+    margin: var(--premium-stack-gap) 0;
+  }
+
+  .product--premium .product__text.caption-with-letter-spacing {
+    color: var(--premium-color-text-muted);
+  }
+
+  .product--premium .product__text.caption-with-letter-spacing + .product__title {
+    margin-top: var(--premium-space-xs);
+  }
+
+  /* Keeps Dawn's offset for a caption placed after the title in step with the new gap */
+  .product--premium .product__title + .product__text.caption-with-letter-spacing {
+    margin-top: calc(var(--premium-stack-gap) * -1);
+  }
+
+  .product--premium .product__info-container .product__description,
+  .product--premium .product__info-container .icon-with-text {
+    margin: var(--premium-space-xl) 0;
+  }
+
+  .product--premium .product__info-container .product__description {
+    padding-top: var(--premium-space-l);
+    border-top: var(--premium-border);
+  }
+{% endstylesheet %}
